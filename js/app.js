@@ -19,7 +19,19 @@ UI.formularioBuscar.addEventListener('submit', e => {
     const api = new API(artista, cancion)
     api.consultarAPI()
       .then(data => {
-        console.log(data)
+        if(data.respuesta.lyrics) {
+          const letra = data.respuesta.lyrics
+          UI.divResultado.textContent = letra;
+          UI.formularioBuscar.reset()
+        } else {
+          UI.divMensajes.innerHTML = 'Canción no encontrada'
+          UI.divMensajes.classList.add('error')
+          document.querySelector('#artista').focus()
+          setTimeout(() => {
+            UI.divMensajes.innerHTML = ''
+            UI.divMensajes.classList.remove('error')
+          }, 3000)
+        }
       })
   }
 })
